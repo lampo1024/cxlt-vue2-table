@@ -1,15 +1,11 @@
 <template>
     <table>
         <caption v-if="caption">{{caption}}</caption>
-        <!--<thead v-if="showHeader">
-                            <tr>
-                                <th v-for="c in columns">
-                                    {{parseColumnTitle(c)}}
-                                </th>
-                            </tr>
-                        </thead>-->
-        <cxlt-table-head :columns="columns"></cxlt-table-head>
-        <tbody></tbody>
+        <cxlt-table-head v-if="showHeader"
+                         :columns="columns"></cxlt-table-head>
+        <cxlt-table-body :data="data"
+                         :columns="columns"></cxlt-table-body>
+        <cxlt-table-footer></cxlt-table-footer>
     </table>
 </template>
 
@@ -17,6 +13,8 @@
 
 import utils from './utils'
 import CxltTableHead from './TableHead'
+import CxltTableBody from './TableBody'
+import CxltTableFooter from './TableFooter'
 
 export default {
     name: 'CxltTable',
@@ -35,14 +33,13 @@ export default {
             default: true
         }
     },
-    mounted() {
-        console.log(this)
-    },
     methods: {
         parseColumnTitle: utils.parseColumnTitle
     },
     components: {
-        CxltTableHead
+        CxltTableHead,
+        CxltTableBody,
+        CxltTableFooter
     }
 }
 

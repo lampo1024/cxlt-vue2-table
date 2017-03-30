@@ -18,9 +18,6 @@ export default {
     created() {
         this.parseColumns(this.rows, this.columns, 0)
     },
-    mounted() {
-        console.log(this.rows)
-    },
     render: function (createElement) {
         var self = this
         return createElement('thead', [this.rows.map(function (row, index) {

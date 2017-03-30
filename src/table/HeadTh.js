@@ -1,6 +1,6 @@
 
 export default {
-    name: 'CxltTh',
+    name: 'CxltHeadTh',
     props: {
         column: {
             type: Object
@@ -33,9 +33,9 @@ export default {
             }
         },
         getColSpan(columns) {
-            let sum = 1
+            let sum = 0
             if (!columns) {
-                return sum
+                return 1
             }
             var self = this
             columns.forEach(function (col) {

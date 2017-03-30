@@ -81,9 +81,20 @@ export default {
                             ]
                         }
                     ]
+                }, {
+                    title: '操作',
+                    render: function (row, index) {
+                        let tpl = '<button @click="click">编辑</button>'
+                        return tpl
+                    }
                 }],
             caption: '演示表格',
             showHeader: true
+        }
+    },
+    methods: {
+        click() {
+            console.log('click')
         }
     }
 }
@@ -100,5 +111,9 @@ export default {
 .table th {
     text-align: center;
     border: 1px solid #000;
+}
+
+.table td {
+    border: 1px solid #000
 }
 </style>

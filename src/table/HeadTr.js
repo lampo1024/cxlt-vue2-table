@@ -1,5 +1,5 @@
 
-import CxltTh from './Th'
+import CxltHeadTh from './HeadTh'
 
 export default {
     name: 'CxltHeadTr',
@@ -14,7 +14,7 @@ export default {
     render: function (createElement) {
         var self = this
         return createElement('tr', [this.row.columns.map(function (column) {
-            return createElement(CxltTh, {
+            return createElement(CxltHeadTh, {
                 props: {
                     column: column,
                     rows: self.rows
@@ -23,6 +23,6 @@ export default {
         })])
     },
     components: {
-        CxltTh
+        CxltHeadTh
     }
 }
