@@ -24,21 +24,27 @@ export default {
                     name: 'Bob',
                     age: 20,
                     province: '山东',
-                    city: '青岛'
+                    city: '青岛',
+                    district: '李沧区',
+                    address: '南昌路'
                 },
                 {
                     id: 2,
                     name: 'Tom',
                     age: 21,
                     province: '山东',
-                    city: '济南'
+                    city: '青岛',
+                    district: '市北区',
+                    address: '长沙路'
                 },
                 {
                     id: 3,
                     name: 'Lucy',
                     age: 22,
                     province: '山东',
-                    city: '威海'
+                    city: '青岛',
+                    district: '市南区',
+                    address: '五四广场'
                 }
             ],
             columns: ['id',
@@ -60,6 +66,17 @@ export default {
                                 }, {
                                     name: 'city',
                                     title: '市'
+                                }, {
+                                    title: '详细地址',
+                                    columns: [
+                                        {
+                                            name: 'district',
+                                            title: '区'
+                                        }, {
+                                            name: 'address',
+                                            title: '街道'
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -75,13 +92,13 @@ export default {
 
 <style>
 .table {
-    width: 300px;
+    width: 500px;
     border: 1px solid #000;
+    border-collapse: collapse;
 }
 
 .table th {
-    vertical-align: top;
     text-align: center;
-    align-content: center
+    border: 1px solid #000;
 }
 </style>

@@ -7,11 +7,8 @@ export default {
         row: {
             type: Object
         },
-        rowCount: {
-            type: Number
-        },
-        rowIndex: {
-            type: Number
+        rows: {
+            type: Array
         }
     },
     render: function (createElement) {
@@ -20,8 +17,7 @@ export default {
             return createElement(CxltTh, {
                 props: {
                     column: column,
-                    rowCount: self.rowCount,
-                    rowIndex: self.rowIndex
+                    rows: self.rows
                 }
             })
         })])

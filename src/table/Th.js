@@ -2,41 +2,50 @@
 export default {
     name: 'CxltTh',
     props: {
-        column: [String, Object],
-        rowCount: {
-            type: Number
+        column: {
+            type: Object
         },
-        rowIndex: {
-            type: Number
+        rows: {
+            type: Array
         }
     },
     render: function (createElement) {
-        var attrs = {}
-        var rowSpan = this.getRowSpan()
+        let attrs = {}
+        let rowSpan = this.getRowSpan()
+        let colSpan = this.getColSpan(this.column.columns)
         if (rowSpan > 1) {
             attrs.rowspan = rowSpan
         }
+        if (colSpan > 1) {
+            attrs.colspan = colSpan
+        }
+
         return createElement('th', {
             attrs: attrs
-        }, this.getTitle())
+        }, this.column.title)
     },
     methods: {
-        getTitle() {
-            let columnType = typeof this.column
-            if (columnType === 'string') {
-                return this.column
-            } else if (columnType === 'object') {
-                return this.column.title
-            } else {
-                return null
-            }
-        },
         getRowSpan() {
             if (this.column.columns) {
                 return 1
             } else {
-                return this.rowCount - this.rowIndex
+                return this.rows.length - this.column.row.rowIndex
             }
+        },
+        getColSpan(columns) {
+            let sum = 1
+            if (!columns) {
+                return sum
+            }
+            var self = this
+            columns.forEach(function (col) {
+                if (col.columns) {
+                    sum += self.getColSpan(col.columns)
+                } else {
+                    sum++
+                }
+            })
+            return sum
         }
     }
 }

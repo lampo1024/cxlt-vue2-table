@@ -15,8 +15,10 @@ export default {
             type: Number
         }
     },
-    mounted() {
+    created() {
         this.parseColumns(this.rows, this.columns, 0)
+    },
+    mounted() {
         console.log(this.rows)
     },
     render: function (createElement) {
@@ -25,8 +27,7 @@ export default {
             return createElement(CxltHeadTr, {
                 props: {
                     row: row,
-                    rowCount: self.rows.length,
-                    rowIndex: index
+                    rows: self.rows
                 }
             })
         })])
@@ -35,22 +36,31 @@ export default {
         CxltHeadTr
     },
     methods: {
-        parseColumns(rows, columns, level) {
+        parseColumns(rows, columns, rowIndex) {
             let ths = []
             let nextColumns = []
-            for (var i = 0; i < columns.length; i++) {
-                ths.push(columns[i])
-                if (columns[i].columns) {
-                    Array.prototype.push.apply(nextColumns, columns[i].columns)
+            let row = {}
+            columns.forEach(function (column) {
+                if (typeof column === 'string') {
+                    ths.push({
+                        title: column,
+                        row: row
+                    })
+                } else if (typeof column === 'object') {
+                    if (column.columns) {
+                        Array.prototype.push.apply(nextColumns, column.columns)
+                    }
+                    column.row = row
+                    ths.push(column)
                 }
-            }
-            rows.push({
-                level: level,
-                columns: ths
             })
-            level++
+
+            row.rowIndex = rowIndex
+            row.columns = ths
+            rows.push(row)
+            rowIndex++
             if (nextColumns.length > 0) {
-                this.parseColumns(rows, nextColumns, level)
+                this.parseColumns(rows, nextColumns, rowIndex)
             }
         }
     }
