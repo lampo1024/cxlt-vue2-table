@@ -1,33 +1,48 @@
 <template>
     <table>
-        <thead>
-            <tr>
-                <th v-for="c in columns">
-                    {{c.title?c.title:c.name?c.name:c}}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="d in data">
-                <td>
-                    {{d.id}}
-                </td>
-                <td>
-                    {{d.name}}
-                </td>
-            </tr>
-        </tbody>
+        <caption v-if="caption">{{caption}}</caption>
+        <!--<thead v-if="showHeader">
+                            <tr>
+                                <th v-for="c in columns">
+                                    {{parseColumnTitle(c)}}
+                                </th>
+                            </tr>
+                        </thead>-->
+        <cxlt-table-head :columns="columns"></cxlt-table-head>
+        <tbody></tbody>
     </table>
 </template>
 
-
 <script>
+
+import utils from './utils'
+import CxltTableHead from './TableHead'
 
 export default {
     name: 'CxltTable',
-    props: ['data', 'columns'],
+    props: {
+        data: {
+            type: Array
+        },
+        caption: {
+            type: String
+        },
+        columns: {
+            type: Array
+        },
+        showHeader: {
+            type: Boolean,
+            default: true
+        }
+    },
     mounted() {
-        console.log(this.columns)
+        console.log(this)
+    },
+    methods: {
+        parseColumnTitle: utils.parseColumnTitle
+    },
+    components: {
+        CxltTableHead
     }
 }
 
