@@ -83,18 +83,44 @@ export default {
                     ]
                 }, {
                     title: '操作',
-                    render: function (row, index) {
-                        let tpl = '<button @click="click">编辑</button>'
-                        return tpl
+                    name: 'id',
+                    render: (data, row, createElement) => {
+                        // return createElement('button', {
+                        //     on: {
+                        //         click: () => {
+                        //             console.log(row.name)
+                        //         }
+                        //     },
+                        //     attrs: {
+                        //         class: 'button'
+                        //     }
+                        // }, '编辑')
+                        return createElement('span', [
+                            createElement('button', {
+                                on: {
+                                    click: () => {
+                                        console.log('edit-' + row.name)
+                                    }
+                                },
+                                attrs: {
+                                    class: 'button'
+                                }
+                            }, '编辑'),
+                            createElement('button', {
+                                on: {
+                                    click: () => {
+                                        console.log('del-' + row.name)
+                                    }
+                                },
+                                attrs: {
+                                    class: 'button'
+                                }
+                            }, '删除')
+                        ])
                     }
                 }],
             caption: '演示表格',
             showHeader: true
-        }
-    },
-    methods: {
-        click() {
-            console.log('click')
         }
     }
 }
