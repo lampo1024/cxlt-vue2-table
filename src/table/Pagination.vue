@@ -1,45 +1,64 @@
 <template>
     <ul class="pagination"
         style="visibility: visible;">
-        <!--<li class="prev disabled"><a href="#"
-                   title="First"><i class="fa fa-angle-double-left"></i></a></li>
-            <li class="prev disabled"><a href="#"
-                   title="Prev"><i class="fa fa-angle-left"></i></a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li class="next"><a href="#"
-                   title="Next"><i class="fa fa-angle-right"></i></a></li>
-            <li class="next"><a href="#"
-                   title="Last"><i class="fa fa-angle-double-right"></i></a></li>
-        -->
-        <li v-for="(p,index) in pageCount">
-            <a href="#">{{index+1}}</a>
+<!--<li class="prev disabled"><a href="#"
+            title="First"><i class="fa fa-angle-double-left"></i></a></li>
+    <li class="prev disabled"><a href="#"
+            title="Prev"><i class="fa fa-angle-left"></i></a></li>
+    <li class="active"><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li class="next"><a href="#"
+            title="Next"><i class="fa fa-angle-right"></i></a></li>
+    <li class="next"><a href="#"
+            title="Last"><i class="fa fa-angle-double-right"></i></a></li>
+-->
+        <li :disabled="prevDisabled">
+            <a @click="prevPage">
+                <</a>
+        </li>
+        <li v-for="i in displayItems">
+            <a href="#"
+               @click="changePage(i)"
+               :class="{active:currentPage==i}">{{i+1}}</a>
         </li>
     </ul>
 </template>
 
 <script>
-
 export default {
     name: 'CxltPagination',
     data: () => {
         return {
             pageCount: null,
-            displayCount: 10,
             currentPage: 0,
-            displayFrom: 0,
-            displayTo: 0
+            displayItems: []
         }
     },
     props: {
         pagination: {
             type: Object
+        },
+        maxItemCount: {
+            type: Number,
+            default: 10
         }
     },
     computed: {
+        displayCount() {
+            return this.maxItemCount
+        },
+        prevDisabled() {
+            if (this.currentPage <= 0) {
+                return 'disabled'
+            }
+            return ''
+        },
+        nextDisabled() {
+
+        }
     },
     created() {
         this.pageCount = this.getPageCount()
@@ -50,11 +69,28 @@ export default {
         if (this.pagination.page) {
             this.currentPage = this.pagination.page <= (this.pageCount - 1) ? this.pagination.page : (this.pageCount - 1)
         }
+
         var displayRange = this.getDisplayRange()
-        console.log(displayRange)
+        for (var i = displayRange.from; i <= displayRange.to; i++) {
+            this.displayItems.push(i)
+        }
     },
     methods: {
         changePage(page) {
+            this.currentPage = page
+            this.pageCount = this.getPageCount()
+            var displayRange = this.getDisplayRange()
+            this.displayItems = []
+            for (var i = displayRange.from; i <= displayRange.to; i++) {
+                this.displayItems.push(i)
+            }
+            this.$emit('change-page', page)
+        },
+        prevPage() {
+            this.changePage(--this.currentPage < 0 ? 0 : this.currentPage)
+        },
+        nextPage() {
+
         },
         getPageCount() {
             if (this.pagination.total && this.pagination.limit) {
@@ -105,5 +141,9 @@ ul.pagination {
 ul.pagination>li {
     float: left;
     width: 30px;
+}
+
+ul.pagination>li a.active {
+    color: red;
 }
 </style>

@@ -6,7 +6,9 @@
                     :show-header="showHeader"
                     class="table">
         </cxlt-table>
-        <cxlt-pagination :pagination="pagination">
+        <cxlt-pagination :pagination="pagination"
+                         :max-item-count="maxItemCount"
+                         @change-page="changePage">
         </cxlt-pagination>
     </div>
 </template>
@@ -126,10 +128,14 @@ export default {
                 // 每页记录数
                 limit: 20,
                 // 当前页 从0开始
-                page: 1,
-
-                displayCount: 4
-            }
+                page: 1
+            },
+            maxItemCount: 2
+        }
+    },
+    methods: {
+        changePage(page) {
+            console.log(page)
         }
     }
 }
