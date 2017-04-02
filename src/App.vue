@@ -5,9 +5,8 @@
                     :caption="caption"
                     :show-header="showHeader"
                     class="table">
-            <cxlt-table-column slot="thead"></cxlt-table-column>
         </cxlt-table>
-        <cxlt-pagination>
+        <cxlt-pagination :pagination="pagination">
         </cxlt-pagination>
     </div>
 </template>
@@ -120,7 +119,17 @@ export default {
                     }
                 }],
             caption: '演示表格',
-            showHeader: true
+            showHeader: true,
+            pagination: {
+                //  记录总数
+                total: 100,
+                // 每页记录数
+                limit: 20,
+                // 当前页 从0开始
+                page: 1,
+
+                displayCount: 4
+            }
         }
     }
 }
