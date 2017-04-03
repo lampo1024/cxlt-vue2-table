@@ -128,7 +128,7 @@ export default {
                 // 每页记录数
                 limit: 20,
                 // 当前页 从0开始
-                page: 1
+                page: 0
             },
             maxItemCount: 2
         }
