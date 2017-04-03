@@ -1,5 +1,13 @@
 <template>
     <div>
+        <cxlt-pagination :pagination="pagination"
+                         :max-item-count="maxItemCount"
+                         @change-page="changePage">
+        </cxlt-pagination>
+        <cxlt-pagination :pagination="pagination"
+                         :max-item-count="maxItemCount"
+                         @change-page="changePage">
+        </cxlt-pagination>
         <cxlt-table :data="data"
                     :columns="columns"
                     :caption="caption"
@@ -14,7 +22,6 @@
 </template>
 
 <script>
-
 export default {
     name: 'App',
     data: () => {
@@ -130,11 +137,13 @@ export default {
                 // 当前页 从0开始
                 page: 0
             },
-            maxItemCount: 2
+            maxItemCount: 2,
+            text: 'hello'
         }
     },
     methods: {
         changePage(page) {
+            // console.log(this.$data.pagination)
             console.log(page)
         }
     }

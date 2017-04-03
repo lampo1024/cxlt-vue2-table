@@ -2,19 +2,19 @@
     <ul class="pagination"
         style="visibility: visible;">
         <!--<li class="prev disabled"><a href="#"
-                                            title="First"><i class="fa fa-angle-double-left"></i></a></li>
-                                    <li class="prev disabled"><a href="#"
-                                            title="Prev"><i class="fa fa-angle-left"></i></a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li class="next"><a href="#"
-                                            title="Next"><i class="fa fa-angle-right"></i></a></li>
-                                    <li class="next"><a href="#"
-                                            title="Last"><i class="fa fa-angle-double-right"></i></a></li>
-                                -->
+                    title="First"><i class="fa fa-angle-double-left"></i></a></li>
+            <li class="prev disabled"><a href="#"
+                    title="Prev"><i class="fa fa-angle-left"></i></a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li class="next"><a href="#"
+                    title="Next"><i class="fa fa-angle-right"></i></a></li>
+            <li class="next"><a href="#"
+                    title="Last"><i class="fa fa-angle-double-right"></i></a></li>
+        -->
         <li>
             <a @click="firstPage">
                 <<</a>
@@ -38,6 +38,9 @@
 </template>
 
 <script>
+
+import { EventBus } from './EventBus'
+
 export default {
     name: 'CxltPagination',
     data: () => {
@@ -81,9 +84,15 @@ export default {
         for (var i = displayRange.from; i <= displayRange.to; i++) {
             this.displayItems.push(i)
         }
+
+        EventBus.$on('change-page', (from, page) => {
+            if (this !== from && this.currentPage !== page) {
+                this.changePage(page, false)
+            }
+        })
     },
     methods: {
-        changePage(page) {
+        changePage(page, emitEvent = true) {
             this.currentPage = page
             this.pageCount = this.getPageCount()
             var displayRange = this.getDisplayRange()
@@ -91,7 +100,10 @@ export default {
             for (var i = displayRange.from; i <= displayRange.to; i++) {
                 this.displayItems.push(i)
             }
-            this.$emit('change-page', page)
+            if (emitEvent) {
+                this.$emit('change-page', page)
+                EventBus.$emit('change-page', this, page)
+            }
         },
         prevPage() {
             if (this.currentPage - 1 >= 0) {
