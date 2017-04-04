@@ -1,6 +1,12 @@
-
+import { EventBus } from './EventBus'
 export default {
     name: 'CxltHeadTh',
+    data: () => {
+        return {
+            // sort type : 0 default 1 asc 2 descs
+            sortType: null
+        }
+    },
     props: {
         column: {
             type: Object
@@ -20,8 +26,16 @@ export default {
             attrs.colspan = colSpan
         }
 
+        let ons = {}
+
+        if (this.column.sortable) {
+            attrs.class = 'sorting'
+            ons.click = this.sort
+        }
+
         return createElement('th', {
-            attrs: attrs
+            attrs: attrs,
+            on: ons
         }, this.column.title)
     },
     methods: {
@@ -46,6 +60,11 @@ export default {
                 }
             })
             return sum
+        },
+        sort() {
+            this.sortType = (++this.sortType) % 3
+            console.log(this.sortType)
+            EventBus.$emit('sort', this.column.name, this.sortType)
         }
     }
 }

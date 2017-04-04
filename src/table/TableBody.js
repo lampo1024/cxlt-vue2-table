@@ -23,6 +23,11 @@ export default {
             })
         ])
     },
+    watch: {
+        data: function (newData) {
+            // console.log('data changed')
+        }
+    },
     methods: {
         expandColumns(columns) {
             let newCols = []

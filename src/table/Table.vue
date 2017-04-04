@@ -15,6 +15,7 @@ import utils from './utils'
 import CxltTableHead from './TableHead'
 import CxltTableBody from './TableBody'
 import CxltTableFooter from './TableFooter'
+import { EventBus } from './EventBus'
 
 export default {
     name: 'CxltTable',
@@ -32,6 +33,11 @@ export default {
             type: Boolean,
             default: true
         }
+    },
+    created() {
+        EventBus.$on('sort', (column, sortType) => {
+            this.$emit('sort', column, sortType)
+        })
     },
     methods: {
         parseColumnTitle: utils.parseColumnTitle
