@@ -5,9 +5,6 @@
                          :max-item-count="maxItemCount"
                          @change-page="changePage">
         </cxlt-pagination>
-        <cxlt-pagination :pagination="pagination"
-                         :max-item-count="maxItemCount"
-                         @change-page="changePage">
         </cxlt-pagination>
         <cxlt-table :data="data"
                     :columns="columns"
@@ -20,10 +17,18 @@
                          :max-item-count="maxItemCount"
                          @change-page="changePage">
         </cxlt-pagination>
+        <cxlt-table :data="brands"
+                    :columns="brandColumns"
+                    class="table">
+        </cxlt-table>
+        <cxlt-pagination :pagination="brandPagination"
+                         @change-page="brandChangePage">
+        </cxlt-pagination>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'App',
     data: () => {
@@ -57,9 +62,16 @@ export default {
                     address: '五四广场'
                 }
             ],
+            brands: [],
+            brandColumns: null,
             columns: null,
             caption: '演示表格',
             showHeader: true,
+            brandPagination: {
+                total: 0,
+                limit: 0,
+                page: 0
+            },
             pagination: {
                 //  记录总数
                 total: 0,
@@ -72,6 +84,15 @@ export default {
         }
     },
     created() {
+        axios.get('http://114.215.118.183:8077/api/brands/pagination')
+            .then(res => {
+                if (res.data.code === 0) {
+                    this.brands = res.data.data.data
+                    this.brandPagination.total = res.data.data.pagination.itemCount
+                    this.brandPagination.limit = res.data.data.pagination.limit
+                }
+            })
+
         this.columns = ['id',
             {
                 title: '用户信息',
@@ -138,6 +159,29 @@ export default {
                 }
             }]
 
+        this.brandColumns = [{
+            name: '$index',
+            title: '序号',
+            filter: (row) => {
+                return row.$index + 1
+            }
+        },
+            'id',
+        {
+            name: 'name',
+            title: '品牌',
+            filter: (row) => {
+                return '<strong>' + row.name + '</strong>'
+            }
+        }, {
+            name: 'pinYin',
+            title: '拼音'
+        }, {
+            name: 'bFirstLetter',
+            title: '首字母'
+        }
+        ]
+
         this.pagination.total = this.data.length
     },
     methods: {
@@ -159,7 +203,16 @@ export default {
                 address: '南昌路'
             })
             this.pagination.total = this.data.length
-            console.log(this.pagination.total)
+        },
+        brandChangePage(page) {
+            var start = this.brandPagination.limit * page
+            axios.get('http://114.215.118.183:8077/api/brands/pagination?start=' + start)
+                .then(res => {
+                    if (res.data.code === 0) {
+                        this.brands = res.data.data.data
+                        this.brandPagination.total = res.data.data.pagination.itemCount
+                    }
+                })
         }
     }
 }
