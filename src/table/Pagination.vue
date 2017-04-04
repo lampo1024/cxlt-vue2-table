@@ -2,19 +2,19 @@
     <ul class="pagination"
         style="visibility: visible;">
         <!--<li class="prev disabled"><a href="#"
-                                            title="First"><i class="fa fa-angle-double-left"></i></a></li>
-                                    <li class="prev disabled"><a href="#"
-                                            title="Prev"><i class="fa fa-angle-left"></i></a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li class="next"><a href="#"
-                                            title="Next"><i class="fa fa-angle-right"></i></a></li>
-                                    <li class="next"><a href="#"
-                                            title="Last"><i class="fa fa-angle-double-right"></i></a></li>
-                                -->
+                                                                    title="First"><i class="fa fa-angle-double-left"></i></a></li>
+                                                            <li class="prev disabled"><a href="#"
+                                                                    title="Prev"><i class="fa fa-angle-left"></i></a></li>
+                                                            <li class="active"><a href="#">1</a></li>
+                                                            <li><a href="#">2</a></li>
+                                                            <li><a href="#">3</a></li>
+                                                            <li><a href="#">4</a></li>
+                                                            <li><a href="#">5</a></li>
+                                                            <li class="next"><a href="#"
+                                                                    title="Next"><i class="fa fa-angle-right"></i></a></li>
+                                                            <li class="next"><a href="#"
+                                                                    title="Last"><i class="fa fa-angle-double-right"></i></a></li>
+                                                        -->
         <li>
             <a @click="firstPage">
                 <<</a>
@@ -96,7 +96,16 @@ export default {
     },
     watch: {
         total: function (newVal) {
-            console.log('total ' + newVal)
+            var pageCount = this.getPageCount()
+            if (pageCount !== this.pageCount) {
+                this.pageCount = pageCount
+                var displayItems = []
+                var displayRange = this.getDisplayRange()
+                for (var i = displayRange.from; i <= displayRange.to; i++) {
+                    displayItems.push(i)
+                }
+                this.displayItems = displayItems
+            }
         }
     },
     methods: {

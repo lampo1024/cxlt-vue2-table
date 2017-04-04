@@ -57,80 +57,7 @@ export default {
                     address: '五四广场'
                 }
             ],
-            columns: ['id',
-                {
-                    title: '用户信息',
-                    columns: [
-                        {
-                            name: 'name',
-                            title: '名称',
-                            sortable: true
-                        }, {
-                            name: 'age',
-                            title: '年龄',
-                            sortable: true
-                        }, {
-                            title: '地址信息',
-                            columns: [
-                                {
-                                    name: 'province',
-                                    title: '省'
-                                }, {
-                                    name: 'city',
-                                    title: '市'
-                                }, {
-                                    title: '详细地址',
-                                    columns: [
-                                        {
-                                            name: 'district',
-                                            title: '区'
-                                        }, {
-                                            name: 'address',
-                                            title: '街道'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }, {
-                    title: '操作',
-                    name: 'id',
-                    render: (data, row, createElement) => {
-                        // return createElement('button', {
-                        //     on: {
-                        //         click: () => {
-                        //             console.log(row.name)
-                        //         }
-                        //     },
-                        //     attrs: {
-                        //         class: 'button'
-                        //     }
-                        // }, '编辑')
-                        return createElement('span', [
-                            createElement('button', {
-                                on: {
-                                    click: () => {
-                                        console.log('edit-' + row.name)
-                                    }
-                                },
-                                attrs: {
-                                    class: 'button'
-                                }
-                            }, '编辑'),
-                            createElement('button', {
-                                on: {
-                                    click: () => {
-                                        console.log('del-' + row.name)
-                                    }
-                                },
-                                attrs: {
-                                    class: 'button'
-                                }
-                            }, '删除')
-                        ])
-                    }
-                }],
+            columns: null,
             caption: '演示表格',
             showHeader: true,
             pagination: {
@@ -141,11 +68,76 @@ export default {
                 // 当前页 从0开始
                 page: 0
             },
-            maxItemCount: 5,
-            text: 'hello'
+            maxItemCount: 5
         }
     },
     created() {
+        this.columns = ['id',
+            {
+                title: '用户信息',
+                columns: [
+                    {
+                        name: 'name',
+                        title: '名称',
+                        sortable: true
+                    }, {
+                        name: 'age',
+                        title: '年龄',
+                        sortable: true
+                    }, {
+                        title: '地址信息',
+                        columns: [
+                            {
+                                name: 'province',
+                                title: '省'
+                            }, {
+                                name: 'city',
+                                title: '市'
+                            }, {
+                                title: '详细地址',
+                                columns: [
+                                    {
+                                        name: 'district',
+                                        title: '区'
+                                    }, {
+                                        name: 'address',
+                                        title: '街道'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }, {
+                title: '操作',
+                name: 'id',
+                render: (value, row, createElement) => {
+                    return createElement('span', [
+                        createElement('button', {
+                            on: {
+                                click: () => {
+                                    console.log('edit-' + row.name)
+                                }
+                            },
+                            attrs: {
+                                class: 'button'
+                            }
+                        }, '编辑'),
+                        createElement('button', {
+                            on: {
+                                click: () => {
+                                    this.data.pop()
+                                    console.log(this)
+                                }
+                            },
+                            attrs: {
+                                class: 'button'
+                            }
+                        }, '删除')
+                    ])
+                }
+            }]
+
         this.pagination.total = this.data.length
     },
     methods: {

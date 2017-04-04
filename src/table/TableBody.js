@@ -13,6 +13,7 @@ export default {
         let self = this
         return createElement('tbody', [
             this.data.map(function (item, index) {
+                item.data = self.data
                 return createElement(CxltBodyTr, {
                     props: {
                         row: item,
@@ -25,7 +26,7 @@ export default {
     },
     watch: {
         data: function (newData) {
-            // console.log('data changed')
+            console.log('data changed')
         }
     },
     methods: {
