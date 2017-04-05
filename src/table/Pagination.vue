@@ -2,23 +2,22 @@
     <ul class="pagination"
         style="visibility: visible;">
         <li>
-            <a @click="firstPage">
+            <a @click.prevent="firstPage">
                 <i class="fa fa-angle-double-left"></i></a>
         </li>
         <li :class="{disabled:prevDisabled}">
             <a @click.prevent="prevPage">
                 <i class="fa fa-angle-left"></i></a>
         </li>
-        <li v-for="i in displayItems">
-            <a href="#"
-               @click="changePage(i)"
-               :class="{active:currentPage==i}">{{i+1}}</a>
+        <li v-for="i in displayItems"
+            :class="{active:currentPage==i}">
+            <a @click.prevent="changePage(i)">{{i+1}}</a>
         </li>
         <li :class="{disabled:nextDisabled}">
-            <a @click="nextPage"><i class="fa fa-angle-right"></i></a>
+            <a @click.prevent="nextPage"><i class="fa fa-angle-right"></i></a>
         </li>
         <li>
-            <a @click="lastPage"><i class="fa fa-angle-double-right"></i></a>
+            <a @click.prevent="lastPage"><i class="fa fa-angle-double-right"></i></a>
         </li>
     </ul>
 </template>
@@ -173,6 +172,7 @@ ul.pagination {
 
 ul.pagination>li {
     float: left;
+    width: 30px;
 }
 
 ul.pagination>li.disabled {
