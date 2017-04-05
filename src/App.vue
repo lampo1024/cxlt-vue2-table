@@ -17,6 +17,12 @@
                          :max-item-count="maxItemCount"
                          @change-page="changePage">
         </cxlt-pagination>
+        <cxlt-table-limit :limits="limits"
+                          @limit-change="limitChange"
+                          :left-label="'每页显示'"
+                          :right-label="'条'"
+                          :show-all="true"
+                          :all-text="'全部'"></cxlt-table-limit>
         <cxlt-table :data="brands"
                     :columns="brandColumns"
                     class="table">
@@ -61,6 +67,13 @@ export default {
                     district: '市南区',
                     address: '五四广场'
                 }
+            ],
+            limits: [
+                10,
+                15,
+                20,
+                30,
+                50
             ],
             brands: [],
             brandColumns: null,
@@ -213,6 +226,9 @@ export default {
                         this.brandPagination.total = res.data.data.pagination.itemCount
                     }
                 })
+        },
+        limitChange(newLimit) {
+            console.log(newLimit)
         }
     }
 }
