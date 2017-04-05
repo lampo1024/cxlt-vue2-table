@@ -1,27 +1,13 @@
 <template>
     <ul class="pagination"
         style="visibility: visible;">
-<!--<li class="prev disabled"><a href="#"
-            title="First"><i class="fa fa-angle-double-left"></i></a></li>
-    <li class="prev disabled"><a href="#"
-            title="Prev"><i class="fa fa-angle-left"></i></a></li>
-    <li class="active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li class="next"><a href="#"
-            title="Next"><i class="fa fa-angle-right"></i></a></li>
-    <li class="next"><a href="#"
-            title="Last"><i class="fa fa-angle-double-right"></i></a></li>
--->
         <li>
             <a @click="firstPage">
-                <<</a>
+                <i class="fa fa-angle-double-left"></i></a>
         </li>
         <li :class="{disabled:prevDisabled}">
             <a @click.prevent="prevPage">
-                <</a>
+                <i class="fa fa-angle-left"></i></a>
         </li>
         <li v-for="i in displayItems">
             <a href="#"
@@ -29,10 +15,10 @@
                :class="{active:currentPage==i}">{{i+1}}</a>
         </li>
         <li :class="{disabled:nextDisabled}">
-            <a @click="nextPage">></a>
+            <a @click="nextPage"><i class="fa fa-angle-right"></i></a>
         </li>
         <li>
-            <a @click="lastPage">>></a>
+            <a @click="lastPage"><i class="fa fa-angle-double-right"></i></a>
         </li>
     </ul>
 </template>
@@ -187,14 +173,9 @@ ul.pagination {
 
 ul.pagination>li {
     float: left;
-    width: 30px;
 }
 
 ul.pagination>li.disabled {
     cursor: not-allowed
-}
-
-ul.pagination>li a.active {
-    color: red;
 }
 </style>
