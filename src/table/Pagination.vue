@@ -30,6 +30,7 @@ export default {
     data: () => {
         return {
             privateCurrentPage: 0,
+            pageCount: 0,
             displayItems: []
         }
     },
@@ -48,6 +49,12 @@ export default {
         }
     },
     computed: {
+        total: function () {
+            return this.pagination.total
+        },
+        limit: function () {
+            return this.pagination.limit
+        },
         displayCount: function () {
             return this.maxItemCount
         },
@@ -56,16 +63,6 @@ export default {
         },
         nextDisabled: function () {
             return this.currentPage >= this.pageCount - 1
-        },
-        pageCount: function () {
-            if (this.pagination.total && this.pagination.limit) {
-                if (this.pagination.limit === 0) {
-                    return 0
-                }
-                return Math.ceil(this.pagination.total * 1.0 / this.pagination.limit)
-            } else {
-                return 0
-            }
         },
         currentPage: {
             get: function () {
@@ -81,12 +78,11 @@ export default {
         }
     },
     created() {
-        if (this.pagination.displayCount) {
-            this.displayCount = this.pagination.displayCount
-        }
         if (this.pagination.page) {
             this.currentPage = this.pagination.page
         }
+
+        this.pageCount = this.getPageCount()
 
         this.displayItems = this.getDisplayItems()
 
@@ -100,7 +96,13 @@ export default {
         EventBus.$off('change-page')
     },
     watch: {
-        pageCount: function (newVal) {
+        total: function (newVal) {
+            this.pageCount = this.getPageCount()
+            this.displayItems = this.getDisplayItems()
+            this.currentPage = this.currentPage
+        },
+        limit: function (newVal) {
+            this.pageCount = this.getPageCount()
             this.displayItems = this.getDisplayItems()
             this.currentPage = this.currentPage
         }
@@ -130,6 +132,16 @@ export default {
         },
         lastPage() {
             this.changePage(this.pageCount - 1)
+        },
+        getPageCount() {
+            if (this.pagination.total && this.pagination.limit) {
+                if (this.pagination.limit === 0) {
+                    return 0
+                }
+                return Math.ceil(this.pagination.total * 1.0 / this.pagination.limit)
+            } else {
+                return 0
+            }
         },
         getDisplayRange() {
             if (this.pageCount <= this.displayCount) {

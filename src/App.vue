@@ -2,9 +2,9 @@
     <div>
         <button @click="addRow">Add Row</button>
         <!--<cxlt-pagination :pagination="pagination"
-                             :max-item-count="maxItemCount"
-                             @change-page="changePage">
-            </cxlt-pagination>-->
+                                         :max-item-count="maxItemCount"
+                                         @change-page="changePage">
+                        </cxlt-pagination>-->
         <cxlt-table :data="data"
                     :columns="columns"
                     :caption="caption"
@@ -13,9 +13,9 @@
                     class="table">
         </cxlt-table>
         <!--<cxlt-pagination :pagination="pagination"
-                             :max-item-count="maxItemCount"
-                             @change-page="changePage">
-            </cxlt-pagination>-->
+                                         :max-item-count="maxItemCount"
+                                         @change-page="changePage">
+                        </cxlt-pagination>-->
         <cxlt-table-limit :limits="limits"
                           @limit-change="limitChange"
                           :left-label="'每页显示'"
@@ -28,6 +28,7 @@
                     class="table">
         </cxlt-table>
         <cxlt-pagination :pagination="brandPagination"
+                         :max-item-count="20"
                          @change-page="brandChangePage">
         </cxlt-pagination>
     </div>
@@ -206,16 +207,18 @@ export default {
             console.log('App.vue ' + column + ' ' + sortType)
         },
         addRow() {
-            this.data.push({
-                id: 1,
-                name: 'Bob1',
-                age: 20,
-                province: '山东',
-                city: '青岛',
-                district: '李沧区',
-                address: '南昌路'
-            })
-            this.pagination.total = this.data.length
+            // this.data.push({
+            //     id: 1,
+            //     name: 'Bob1',
+            //     age: 20,
+            //     province: '山东',
+            //     city: '青岛',
+            //     district: '李沧区',
+            //     address: '南昌路'
+            // })
+            // this.pagination.total = this.data.length
+
+            this.brandPagination.total = this.brandPagination.total - 1
         },
         brandChangePage(page) {
             var start = this.brandPagination.limit * page
