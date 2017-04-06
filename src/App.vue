@@ -1,11 +1,10 @@
 <template>
     <div>
         <button @click="addRow">Add Row</button>
-        <cxlt-pagination :pagination="pagination"
-                         :max-item-count="maxItemCount"
-                         @change-page="changePage">
-        </cxlt-pagination>
-        </cxlt-pagination>
+        <!--<cxlt-pagination :pagination="pagination"
+                             :max-item-count="maxItemCount"
+                             @change-page="changePage">
+            </cxlt-pagination>-->
         <cxlt-table :data="data"
                     :columns="columns"
                     :caption="caption"
@@ -13,16 +12,17 @@
                     @sort="sort"
                     class="table">
         </cxlt-table>
-        <cxlt-pagination :pagination="pagination"
-                         :max-item-count="maxItemCount"
-                         @change-page="changePage">
-        </cxlt-pagination>
+        <!--<cxlt-pagination :pagination="pagination"
+                             :max-item-count="maxItemCount"
+                             @change-page="changePage">
+            </cxlt-pagination>-->
         <cxlt-table-limit :limits="limits"
                           @limit-change="limitChange"
                           :left-label="'每页显示'"
                           :right-label="'条'"
                           :show-all="true"
-                          :all-text="'全部'"></cxlt-table-limit>
+                          :all-text="'全部'"
+                          :all-value="-1"></cxlt-table-limit>
         <cxlt-table :data="brands"
                     :columns="brandColumns"
                     class="table">
@@ -219,7 +219,7 @@ export default {
         },
         brandChangePage(page) {
             var start = this.brandPagination.limit * page
-            axios.get('http://114.215.118.183:8077/api/brands/pagination?start=' + start)
+            axios.get('http://114.215.118.183:8077/api/brands/pagination?start=' + start + '&limit=' + this.brandPagination.limit)
                 .then(res => {
                     if (res.data.code === 0) {
                         this.brands = res.data.data.data
@@ -228,7 +228,14 @@ export default {
                 })
         },
         limitChange(newLimit) {
-            console.log(newLimit)
+            axios.get('http://114.215.118.183:8077/api/brands/pagination?limit=' + newLimit)
+                .then(res => {
+                    if (res.data.code === 0) {
+                        this.brands = res.data.data.data
+                        this.brandPagination.total = res.data.data.pagination.itemCount
+                        this.brandPagination.limit = newLimit
+                    }
+                })
         }
     }
 }

@@ -1,6 +1,5 @@
 <template>
-    <ul class="pagination"
-        style="visibility: visible;">
+    <ul class="pagination">
         <li>
             <a @click.prevent="firstPage">
                 <i class="fa fa-angle-double-left"></i></a>
@@ -30,14 +29,18 @@ export default {
     name: 'CxltPagination',
     data: () => {
         return {
-            pageCount: null,
-            currentPage: 0,
+            privateCurrentPage: 0,
             displayItems: []
         }
     },
     props: {
         pagination: {
-            type: Object
+            type: Object,
+            default: {
+                total: 0,
+                limit: 10,
+                page: 0
+            }
         },
         maxItemCount: {
             type: Number,
@@ -45,33 +48,47 @@ export default {
         }
     },
     computed: {
-        displayCount() {
+        displayCount: function () {
             return this.maxItemCount
         },
-        prevDisabled() {
+        prevDisabled: function () {
             return this.currentPage <= 0
         },
-        nextDisabled() {
+        nextDisabled: function () {
             return this.currentPage >= this.pageCount - 1
         },
-        total() {
-            return this.pagination.total
+        pageCount: function () {
+            if (this.pagination.total && this.pagination.limit) {
+                if (this.pagination.limit === 0) {
+                    return 0
+                }
+                return Math.ceil(this.pagination.total * 1.0 / this.pagination.limit)
+            } else {
+                return 0
+            }
+        },
+        currentPage: {
+            get: function () {
+                return this.privateCurrentPage
+            },
+            set: function (val) {
+                if (val > this.pageCount - 1) {
+                    this.privateCurrentPage = this.pageCount - 1
+                } else {
+                    this.privateCurrentPage = val
+                }
+            }
         }
     },
     created() {
-        this.pageCount = this.getPageCount()
-
         if (this.pagination.displayCount) {
             this.displayCount = this.pagination.displayCount
         }
         if (this.pagination.page) {
-            this.currentPage = this.pagination.page <= (this.pageCount - 1) ? this.pagination.page : (this.pageCount - 1)
+            this.currentPage = this.pagination.page
         }
 
-        var displayRange = this.getDisplayRange()
-        for (var i = displayRange.from; i <= displayRange.to; i++) {
-            this.displayItems.push(i)
-        }
+        this.displayItems = this.getDisplayItems()
 
         EventBus.$on('change-page', (from, page) => {
             if (this !== from && this.currentPage !== page) {
@@ -79,29 +96,18 @@ export default {
             }
         })
     },
+    beforeDestroy() {
+        EventBus.$off('change-page')
+    },
     watch: {
-        total: function (newVal) {
-            var pageCount = this.getPageCount()
-            if (pageCount !== this.pageCount) {
-                this.pageCount = pageCount
-                var displayItems = []
-                var displayRange = this.getDisplayRange()
-                for (var i = displayRange.from; i <= displayRange.to; i++) {
-                    displayItems.push(i)
-                }
-                this.displayItems = displayItems
-            }
+        pageCount: function (newVal) {
+            this.displayItems = this.getDisplayItems()
+            this.currentPage = this.currentPage
         }
     },
     methods: {
         changePage(page, emitEvent = true) {
             this.currentPage = page
-            this.pageCount = this.getPageCount()
-            var displayRange = this.getDisplayRange()
-            this.displayItems = []
-            for (var i = displayRange.from; i <= displayRange.to; i++) {
-                this.displayItems.push(i)
-            }
             if (emitEvent) {
                 this.$emit('change-page', page)
                 EventBus.$emit('change-page', this, page)
@@ -124,13 +130,6 @@ export default {
         },
         lastPage() {
             this.changePage(this.pageCount - 1)
-        },
-        getPageCount() {
-            if (this.pagination.total && this.pagination.limit) {
-                return Math.ceil(this.pagination.total * 1.0 / this.pagination.limit)
-            } else {
-                return 0
-            }
         },
         getDisplayRange() {
             if (this.pageCount <= this.displayCount) {
@@ -158,8 +157,15 @@ export default {
                     }
                 }
             }
+        },
+        getDisplayItems() {
+            var displayItems = []
+            var displayRange = this.getDisplayRange()
+            for (var i = displayRange.from; i <= displayRange.to; i++) {
+                displayItems.push(i)
+            }
+            return displayItems
         }
-
     }
 }
 
@@ -172,7 +178,6 @@ ul.pagination {
 
 ul.pagination>li {
     float: left;
-    width: 30px;
 }
 
 ul.pagination>li.disabled {

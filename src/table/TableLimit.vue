@@ -3,9 +3,10 @@
         <span v-if="leftLabel">{{leftLabel}}</span>
         <select @change="selectChange"
                 v-model="selectedVal">
-            <option v-for="l in limits">{{l}}</option>
+            <option v-for="l in limits"
+                    :value="l">{{l}}</option>
             <option v-if="showAll"
-                    value="0">{{allText}}</option>
+                    :value="allValue">{{allText}}</option>
         </select>
         <span v-if="rightLabel">{{rightLabel}}</span>
     </label>
@@ -34,6 +35,10 @@ export default {
         allText: {
             type: String,
             default: 'All'
+        },
+        allValue: {
+            type: Number,
+            default: 0
         }
     },
     created() {
