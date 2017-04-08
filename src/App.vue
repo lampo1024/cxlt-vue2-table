@@ -2,9 +2,9 @@
     <div>
         <button @click="addRow">Add Row</button>
         <!--<cxlt-pagination :pagination="pagination"
-                                         :max-item-count="maxItemCount"
-                                         @change-page="changePage">
-                        </cxlt-pagination>-->
+                                                         :max-item-count="maxItemCount"
+                                                         @change-page="changePage">
+                                        </cxlt-pagination>-->
         <cxlt-table :data="data"
                     :columns="columns"
                     :caption="caption"
@@ -13,9 +13,9 @@
                     class="table">
         </cxlt-table>
         <!--<cxlt-pagination :pagination="pagination"
-                                         :max-item-count="maxItemCount"
-                                         @change-page="changePage">
-                        </cxlt-pagination>-->
+                                                         :max-item-count="maxItemCount"
+                                                         @change-page="changePage">
+                                        </cxlt-pagination>-->
         <cxlt-table-limit :limits="limits"
                           @limit-change="limitChange"
                           :left-label="'每页显示'"
@@ -48,7 +48,8 @@ export default {
                     province: '山东',
                     city: '青岛',
                     district: '李沧区',
-                    address: '南昌路'
+                    address: '南昌路',
+                    enable: true
                 },
                 {
                     id: 2,
@@ -57,7 +58,8 @@ export default {
                     province: '山东',
                     city: '青岛',
                     district: '市北区',
-                    address: '长沙路'
+                    address: '长沙路',
+                    enable: false
                 },
                 {
                     id: 3,
@@ -66,7 +68,8 @@ export default {
                     province: '山东',
                     city: '青岛',
                     district: '市南区',
-                    address: '五四广场'
+                    address: '五四广场',
+                    enable: true
                 }
             ],
             limits: [
@@ -107,7 +110,10 @@ export default {
                 }
             })
 
-        this.columns = ['id',
+        this.columns = ['id', {
+            name: 'enable',
+            title: '启用'
+        },
             {
                 title: '用户信息',
                 columns: [
@@ -119,6 +125,9 @@ export default {
                         name: 'age',
                         title: '年龄',
                         sortable: true
+                    }, {
+                        name: 'enable',
+                        title: '启用'
                     }, {
                         title: '地址信息',
                         columns: [
