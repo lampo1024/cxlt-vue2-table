@@ -29,12 +29,14 @@ export default {
     },
     computed: {
         tdValue() {
-            var names = this.item.name.split('.')
-            var val = this.row[names[0]]
-            for (var i = 1; i < names.length; i++) {
-                val = val[names[i]]
+            if (this.item.name) {
+                var names = this.item.name.split('.')
+                var val = this.row[names[0]]
+                for (var i = 1; i < names.length; i++) {
+                    val = val[names[i]]
+                }
+                return val
             }
-            return val
         }
     }
 }
