@@ -2,9 +2,9 @@
     <div>
         <button @click="addRow">Add Row</button>
         <!--<cxlt-pagination :pagination="pagination"
-                                                         :max-item-count="maxItemCount"
-                                                         @change-page="changePage">
-                                        </cxlt-pagination>-->
+                                                                             :max-item-count="maxItemCount"
+                                                                             @change-page="changePage">
+                                                            </cxlt-pagination>-->
         <cxlt-table :data="data"
                     :columns="columns"
                     :caption="caption"
@@ -13,9 +13,9 @@
                     class="table">
         </cxlt-table>
         <!--<cxlt-pagination :pagination="pagination"
-                                                         :max-item-count="maxItemCount"
-                                                         @change-page="changePage">
-                                        </cxlt-pagination>-->
+                                                                             :max-item-count="maxItemCount"
+                                                                             @change-page="changePage">
+                                                            </cxlt-pagination>-->
         <cxlt-table-limit :limits="limits"
                           @limit-change="limitChange"
                           :left-label="'每页显示'"
@@ -49,7 +49,15 @@ export default {
                     city: '青岛',
                     district: '李沧区',
                     address: '南昌路',
-                    enable: true
+                    enable: true,
+                    parent: {
+                        id: 1,
+                        name: 'Bob P',
+                        parent: {
+                            id: 4,
+                            name: 'Bob PP'
+                        }
+                    }
                 },
                 {
                     id: 2,
@@ -59,7 +67,15 @@ export default {
                     city: '青岛',
                     district: '市北区',
                     address: '长沙路',
-                    enable: false
+                    enable: false,
+                    parent: {
+                        id: 2,
+                        name: 'Tom P',
+                        parent: {
+                            id: 5,
+                            name: 'Tom PP'
+                        }
+                    }
                 },
                 {
                     id: 3,
@@ -69,7 +85,15 @@ export default {
                     city: '青岛',
                     district: '市南区',
                     address: '五四广场',
-                    enable: true
+                    enable: true,
+                    parent: {
+                        id: 3,
+                        name: 'Lucy P',
+                        parent: {
+                            id: 6,
+                            name: 'Lucy PP'
+                        }
+                    }
                 }
             ],
             limits: [
@@ -125,6 +149,12 @@ export default {
                         name: 'age',
                         title: '年龄',
                         sortable: true
+                    }, {
+                        name: 'parent.name',
+                        title: '父母'
+                    }, {
+                        name: 'parent.parent.name',
+                        title: '祖父母'
                     }, {
                         name: 'enable',
                         title: '启用'

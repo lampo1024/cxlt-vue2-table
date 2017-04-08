@@ -6,7 +6,7 @@ export default {
         if (typeof this.item === 'object') {
             if (this.item.render && typeof this.item.render === 'function') {
                 return createElement('td', [
-                    this.item.render(this.row[this.item.name], this.row, createElement)
+                    this.item.render(this.tdValue, this.row, createElement)
                 ])
             } else if (this.item.filter && typeof this.item.filter === 'function') {
                 return createElement('td', {
@@ -20,11 +20,21 @@ export default {
                 } else {
                     return createElement('td', {
                         domProps: {
-                            innerHTML: this.row[this.item.name]
+                            innerHTML: this.tdValue
                         }
                     })
                 }
             }
+        }
+    },
+    computed: {
+        tdValue() {
+            var names = this.item.name.split('.')
+            var val = this.row[names[0]]
+            for (var i = 1; i < names.length; i++) {
+                val = val[names[i]]
+            }
+            return val
         }
     }
 }
